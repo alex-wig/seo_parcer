@@ -41,7 +41,7 @@ def exists_path(base_url, path):
     except:
         return False
 
-def fetch_yandex_results(query, max_results=10):
+def fetch_yandex_results(query, max_results=3):
     urls = set()
     page = 0
 
