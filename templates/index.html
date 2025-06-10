@@ -26,7 +26,23 @@
             </div>
             
             <button type="submit" class="btn btn-primary">Анализировать</button>
-        </form>
+        <form method="POST" action="/" class="card p-4 mb-4">  <!-- Добавлен action="/" -->
+    <div class="mb-3">
+        <label class="form-label">Запрос (ниша):</label>
+        <input type="text" name="query" class="form-control" required>
+    </div>
+    
+    <div class="mb-3">
+        <label class="form-label">Регион:</label>
+        <select name="region" class="form-select">
+            {% for region in regions %}
+                <option value="{{ region }}">{{ region }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Анализировать</button>
+</form>
 
         {% if results %}
             <div class="card p-4">
