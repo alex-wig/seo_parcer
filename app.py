@@ -100,11 +100,11 @@ async def parse_seo(session, url):
     soup = BeautifulSoup(html, "html.parser")
     domain = tldextract.extract(url).domain
     
-    return {
+    return {  # <-- Открывающая фигурная скобка
         "URL": url,
         "Title": soup.title.text.strip() if soup.title else "—",
         "Description": (soup.find("meta", attrs={"name": "description"})["content"].strip() 
-                      if soup.find("meta", attrs={"name": "description"}) else "—",
+                      if soup.find("meta", attrs={"name": "description"}) else "—"),
         "H1": soup.h1.text.strip() if soup.h1 else "—",
         "Robots.txt": "✓" if exists_path(url, "robots.txt") else "✗",
         "Sitemap.xml": "✓" if exists_path(url, "sitemap.xml") else "✗",
@@ -112,7 +112,7 @@ async def parse_seo(session, url):
         "Open Graph": "✓" if soup.find("meta", property="og:title") else "✗",
         "ЧПУ": "✓" if "-" in url.split(domain)[-1] else "✗",
         "SSL": "✓" if url.startswith("https") else "✗"
-    }
+    }  # <-- Закрывающая фигурная скобка
 
 # --- Основные маршруты Flask ---
 @app.route("/", methods=["GET", "POST"])
@@ -153,7 +153,7 @@ def export():
         as_attachment=True,
         download_name="seo_analysis.xlsx",
         mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    )
+    )  # <-- Все скобки закрыты
 
 # --- Запуск приложения ---
 if __name__ == "__main__":
