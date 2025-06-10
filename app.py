@@ -1,21 +1,24 @@
+import os  # Добавьте в начало файла
+from flask import Flask, render_template, request, send_file
+from bs4 import BeautifulSoup
+import requests  # Добавлено
+import pandas as pd
+from urllib.parse import quote
+import tldextract
+from fake_useragent import UserAgent
+import io
 import asyncio
+import aiohttp
 import random
 import time
-import requests
-from urllib.parse import quote
-from functools import wraps
-import io
 
-import aiohttp
-import pandas as pd
-import tldextract
-from bs4 import BeautifulSoup
-from fake_useragent import UserAgent
-from flask import Flask, render_template, request, send_file
-
-# --- Конфигурация ---
 app = Flask(__name__)
 ua = UserAgent()
+
+# ... (остальные константы и функции остаются без изменений)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))  # Исправлено
 
 # Прокси (если нужны)
 PROXIES = []  # Пример: ["http://proxy1:port", "http://proxy2:port"]
