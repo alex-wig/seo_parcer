@@ -27,7 +27,7 @@ USE_PROXIES = False  # Включить, если используете про�
 # Исключаемые домены (чтобы не парсить Яндекс.Маркет, Авито и т.д.)
 EXCLUDE_DOMAINS = [
     "2gis", "yandex", "avito", "google", "market.yandex", "mail.ru", 
-    "ozon", "wildberries", "aliexpress", "amazon", "ebay"
+    "ozon", "wildberries", "aliexpress", "amazon", "ebay", "ya", "bing"
 ]
 
 # Регионы для поиска
@@ -39,13 +39,13 @@ REGIONS = [
 # --- Вспомогательные функции ---
 def random_delay():
     """Случайная задержка между запросами."""
-    return random.uniform(1, 3)
+    return random.uniform(3, 7)
 
 async def fetch_url(session, url):
     """Асинхронный запрос к URL."""
     try:
         proxy = random.choice(PROXIES) if USE_PROXIES and PROXIES else None
-        async with session.get(url, proxy=proxy, timeout=10) as resp:
+        async with session.get(url, proxy=proxy, timeout=30) as resp:
             if resp.status == 200:
                 return await resp.text()
     except Exception as e:
@@ -62,7 +62,7 @@ def exists_path(base_url, path):
         return False
 
 # --- Парсинг выдачи Яндекса ---
-def fetch_yandex_results(query, max_results=50):
+def fetch_yandex_results(query, max_results=10):
     """Получает список URL из поисковой выдачи Яндекса."""
     urls = set()
     page = 0
