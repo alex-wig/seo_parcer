@@ -1,6 +1,7 @@
 import asyncio
 import random
 import time
+import requests
 from urllib.parse import quote
 from functools import wraps
 import io
@@ -52,7 +53,7 @@ def exists_path(base_url, path):
     """Проверяет наличие файла (robots.txt, sitemap.xml) на сайте."""
     try:
         url = f"{base_url.rstrip('/')}/{path.lstrip('/')}"
-        resp = requests.head(url, headers={"User-Agent": ua.random}, timeout=5)
+        resp = requests.head(url, headers={"User-Agent": ua.random}, timeout=5)  # 'requests' определен
         return resp.status_code == 200
     except:
         return False
@@ -67,22 +68,22 @@ def fetch_yandex_results(query, max_results=50):
         try:
             url = f"https://yandex.ru/search/?text={quote(query)}&p={page}"
             headers = {"User-Agent": ua.random}
-            resp = requests.get(url, headers=headers, timeout=10)
+            resp = requests.get(url, headers=headers, timeout=10)  # Теперь 'requests' определен
             soup = BeautifulSoup(resp.text, "html.parser")
-            links = soup.select("a.Link, a.OrganicTitle-Link")  # Селекторы могут меняться!
+            links = soup.select("a.Link, a.OrganicTitle-Link")  # Актуальные селекторы
             
             if not links:
-                break  # Больше нет результатов
+                break  # Нет результатов
                 
             for link in links:
                 href = link.get("href")
-                if href and href.startswith("http") and not any(domain in href for domain in EXCLUDE_DOMAINS):
+                if href and href.startswith("http") and not any(skip in href for skip in EXCLUDE_DOMAINS):
                     urls.add(href)
                     if len(urls) >= max_results:
                         break
             
             page += 1
-            time.sleep(random_delay())  # Задержка между страницами
+            time.sleep(random.uniform(1, 3))  # Задержка между страницами
             
         except Exception as e:
             print(f"Ошибка парсинга Яндекса: {e}")
